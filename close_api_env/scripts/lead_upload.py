@@ -19,7 +19,7 @@ for d in data:
     else:
         grouped_lead[ d['Company']] = {'contact name': [d['Contact Name']], 'email': [d['Contact Emails']], 'phone': [d['Contact Phones']]}
 
-#Create a function to format the data per the API docs POST request body for each lead 
+#Create a function to format the data per the API docs POST request body for each lead
 def lead_from_csv(data):
     new_lead = {'name': '', 'contacts': []}
     for k, v in grouped_lead.items():
@@ -50,18 +50,17 @@ def lead_from_csv(data):
 
 
             contact = {}
-            for x in v['contact name']:
-                contact['name'] = x
+            contact['name'] = v['contact name']
 
             phones = []
-            for y in v['phone']:
-                phones.append({'phone': y, 'type': 'office'})
+            for p in v['phone']:
+                phones.append({'phone': p, 'type': 'office'})
                 if len(phones):
                     contact['phones'] = phones
 
             emails = []
-            for n in v['email']:
-                emails.append({'email': n, 'type': 'office'})
+            for e in v['email']:
+                emails.append({'email': e, 'type': 'office'})
                 if len(emails):
                     contact['emails'] = emails
 
