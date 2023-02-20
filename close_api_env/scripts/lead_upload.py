@@ -30,24 +30,15 @@ def lead_from_csv(data):
             new_lead['name'] = k
             #custom fields
             custom = {}
-            if f"{headers[4]}" in i:
+            if i['Company'] == k:
                 custom['founded'] = i[f"{headers[4]}"]
-            if f"{headers[5]}" in i:
                 custom['revenue'] = i[f"{headers[5]}"]
             if len(custom):
                 new_lead['custom'] = custom
             #adress of company
             address = {}
-            if 'address' in i:
-                address['address'] = i['address']
-            if 'city' in i:
-                address['city'] = i['city']
-            if f"{headers[6]}" in i:
+            if i['Company'] == k:
                 address['state'] = i[f"{headers[6]}"]
-            if 'zip' in i:
-                address['zipcode'] = i['zip']
-            if 'country' in i:
-                address['country'] = i['country']
             if len(address):
                 new_lead['addresses'] = [address]
 
