@@ -22,10 +22,13 @@ for d in data:
 #Create a function to format the data per the API docs POST request body for each lead
 def lead_from_csv(data):
     new_lead = {'name': '', 'contacts': []}
+    #iterate through keys and values of the grouped_leads
     for k, v in grouped_lead.items():
+        #iterate through the csv rows
         for i in data:
+            #lead name or company
             new_lead['name'] = k
-
+            #custom fields
             custom = {}
             if f"{headers[4]}" in i:
                 custom['founded'] = i[f"{headers[4]}"]
@@ -33,7 +36,7 @@ def lead_from_csv(data):
                 custom['revenue'] = i[f"{headers[5]}"]
             if len(custom):
                 new_lead['custom'] = custom
-
+            #adress of company
             address = {}
             if 'address' in i:
                 address['address'] = i['address']
@@ -48,7 +51,7 @@ def lead_from_csv(data):
             if len(address):
                 new_lead['addresses'] = [address]
 
-
+            #list of contacts in lead
             contact = {}
             contact['name'] = v['contact name']
 
