@@ -1,4 +1,8 @@
 import pandas as pd
+import config
+import simplejson as json
+from closeio_api import Client
+import uuid
 
 #Create a dataframe using pandas from the csv that replaces the empty strings for nan value
 df = pd.read_csv("close_api_env/data/Leads_Mock_Data.csv", skipinitialspace=True)
@@ -6,8 +10,6 @@ df = pd.read_csv("close_api_env/data/Leads_Mock_Data.csv", skipinitialspace=True
 headers = list(df.columns)
 #Create a collection of dictionaries for each row of the csv
 data = df.to_dict('records')
-#Create a list of companies to get rid of duplicates
-companies = set([ d['Company'] for d in data ])
 #Group contacts info by companies and remove duplicates
 grouped_lead = {}
 
@@ -29,12 +31,9 @@ def lead_from_csv(data):
             #lead name or company
             new_lead['name'] = k
             #custom fields
-            custom = {}
-            if i['Company'] == k:
-                custom['founded'] = i[f"{headers[4]}"]
-                custom['revenue'] = i[f"{headers[5]}"]
-            if len(custom):
-                new_lead['custom'] = custom
+            new_lead[f"custom.cf_{str(uuid.uuid4().hex)}"] = i['custom.Company Founded']
+            new_lead[f"custom.cf_{str(uuid.uuid4().hex)}"] = i['custom.Company Revenue']
+
             #adress of company
             address = {}
             if i['Company'] == k:
@@ -44,7 +43,7 @@ def lead_from_csv(data):
 
             #list of contacts in lead
             contact = {}
-            contact['name'] = v['contact name']
+            contact['name'] = i[f"{headers[1]}"]
 
             phones = []
             for p in v['phone']:
@@ -65,5 +64,7 @@ def lead_from_csv(data):
 
             return new_lead
 
-
-print(lead_from_csv(data))
+lead = json.dumps(lead_from_csv(data), ignore_nan=True)
+api = Client(config.api_key)
+response = api.post('lead', data=lead)
+print(response)
