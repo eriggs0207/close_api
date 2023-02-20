@@ -19,7 +19,7 @@ for d in data:
     else:
         grouped_lead[ d['Company']] = {'contact name': [d['Contact Name']], 'email': [d['Contact Emails']], 'phone': [d['Contact Phones']]}
 
-#Create a function to format the data per the API docs POST request body
+#Create a function to format the data per the API docs POST request body for each lead 
 def lead_from_csv(data):
     new_lead = {'name': '', 'contacts': []}
     for k, v in grouped_lead.items():
@@ -50,23 +50,27 @@ def lead_from_csv(data):
 
 
             contact = {}
-            contact['name'] = v['contact name']
+            for x in v['contact name']:
+                contact['name'] = x
 
             phones = []
-            phones.append({'phones': v['phone'], 'type': 'office'})
-            if len(phones):
-                contact['phones'] = phones
+            for y in v['phone']:
+                phones.append({'phone': y, 'type': 'office'})
+                if len(phones):
+                    contact['phones'] = phones
 
             emails = []
-            emails.append({'email': v['email'], 'type': 'office'})
-            if len(emails):
-                contact['emails'] = emails
+            for n in v['email']:
+                emails.append({'email': n, 'type': 'office'})
+                if len(emails):
+                    contact['emails'] = emails
 
             if len(contact):
                 new_lead['contacts'] = [contact]
 
+            import ipdb; ipdb.set_trace()
+
             return new_lead
 
-            import ipdb; ipdb.set_trace()
 
 print(lead_from_csv(data))
