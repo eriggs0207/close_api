@@ -1,9 +1,8 @@
 import csv
 
 def lead_from_csv(data):
-    lead = {'name': data['Company'], 'contacts': [], 'custom': {}}
+    lead = {'name': data['Company'], 'contacts': []}
 
-    if data['Company'] in lead['name']:
         contact = {}
         if data['Contact Name'] in data:
             contact['name'] = data['Contact Name']
@@ -45,11 +44,5 @@ with open("close_api_env/data/Leads_Mock_Data.csv") as csvfile:
 
     import ipdb; ipdb.set_trace()
 
-    # print(type(lead))
-    # for row in reader:
-    #     leads['name'] = row[0]
 
-    #     contacts.append(line)
-    #
-    # contact = [list(filter(None, lst)) for lst in contacts]
 print(lead_from_csv(row))

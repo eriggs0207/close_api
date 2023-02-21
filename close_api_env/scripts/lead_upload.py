@@ -30,7 +30,7 @@ def lead_from_csv(data):
         for i in data:
             #lead name or company
             new_lead['name'] = k
-            #custom fields
+            #custom fields with random uuid added to field 
             new_lead[f"custom.cf_{str(uuid.uuid4().hex)}"] = i['custom.Company Founded']
             new_lead[f"custom.cf_{str(uuid.uuid4().hex)}"] = i['custom.Company Revenue']
 
@@ -60,11 +60,11 @@ def lead_from_csv(data):
             if len(contact):
                 new_lead['contacts'] = [contact]
 
-            import ipdb; ipdb.set_trace()
 
             return new_lead
 
 lead = json.dumps(lead_from_csv(data), ignore_nan=True)
 api = Client(config.api_key)
+import ipdb; ipdb.set_trace()
 response = api.post('lead', data=lead)
 print(response)
