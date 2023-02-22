@@ -62,7 +62,6 @@ for row in csv:
     else:
         grouped_lead[lead['name']]['contacts'] = contacts
 
-
 #convert leads to JSON and change nan values to null
 for value in grouped_lead.values():
     json_dict = json.dumps(value, ignore_nan=True)
@@ -74,11 +73,8 @@ for value in grouped_lead.values():
     print(response)
 
 #find_leads
-api = Client(config.api_key)
-response = api.get(
-            'lead',
-            params={
-                'query': '',
-                '_fields': 'custom'
-            },
-        )
+# api = Client(config.api_key)
+# response = api.get('lead', params={
+#         '_fields': 'custom',
+#         'query': 'custom.my_custom_field':"" ,
+#         })
