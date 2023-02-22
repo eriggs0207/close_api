@@ -4,12 +4,13 @@ import simplejson as json
 from closeio_api import Client
 import uuid
 
+
 #Create a dataframe using pandas from the csv that replaces the empty strings for nan value
 df = pd.read_csv("close_api_env/data/Leads_Mock_Data.csv", skipinitialspace=True)
 #Create a list of the headers in the csv
 headers = list(df.columns)
 #Create a collection of dictionaries for each row of the csv
-data = df.to_dict('records')
+csv = df.to_dict('records')
 
 #function to format lead from row of csv per API request body
 def lead_from_csv(row):
@@ -47,17 +48,33 @@ def contact_from_csv(row):
     return contact
 
 #group company to contacts
-for row in data:
-    grouped_lead = lead_from_csv(row)
+grouped_lead = {}
+
+for row in csv:
+    lead = lead_from_csv(row)
     contacts = contact_from_csv(row)
 
-    if grouped_lead['name'] in row:
-        grouped_lead['contacts'].append(contacts)
+    if lead['name'] not in grouped_lead:
+        grouped_lead[lead['name']] = lead
+
+    if len(grouped_lead[lead['name']]):
+        grouped_lead[lead['name']]['contacts'].append(contacts)
     else:
-        grouped_lead['contacts'] = [contacts]
+        grouped_lead[lead['name']]['contacts'] = contacts
 
 #convert leads to JSON and change nan values to null
-leads = json.dumps(grouped_lead, ignore_nan=True)
-api = Client(config.api_key)
-response = api.post('lead', data=leads)
-print(response)
+for value in grouped_lead.values():
+    json_dict = json.dumps(value, ignore_nan=True)
+    data = json.loads(json_dict)
+    api = Client(config.api_key)
+    import ipdb; ipdb.set_trace()
+
+    response = api.post('lead', data=data)
+    print(response)
+
+#find_leads
+# api = Client(config.api_key)
+# response = api.get('lead', params={
+#         '_fields': 'custom',
+#         'query': 'custom.my_custom_field':"" ,
+#         })
