@@ -14,7 +14,7 @@
 ## Logic of the Script
 
 This script takes in a CSV file and cleans the data in order for it to be stored correctly in Close CRM api.
-In order to do that it first reads the CSV file using pandas and converts it into a dataframe(a version of a table).  Turning it into a dataframe eliminates the missing data and replaces it with NaN values.  Two functions take in a row of the CSV file as an argument and create leads and contacts.  Each row of the csv file is a contact and a lead can have many contacts. A dictionary is built to associate the leads with their contacts.  The dictionary of grouped_lead is converted into JSON and the NaN values are changed into Null with is JSON convention.  This dictionary is then iterated through and every lead in the CSV is created in the API when the script is run.  
+In order to do that it first reads the CSV file using pandas and converts it into a dataframe(a version of a table).  Turning it into a dataframe eliminates the missing data and replaces it with NaN values.  Two functions take in a row of the CSV file as an argument and create leads and contacts.  Each row of the csv file is a contact and a lead can have many contacts. A dictionary is built to associate the leads with their contacts.  The dictionary of grouped_lead is converted into JSON and the NaN values are changed into Null which is JSON convention.  This dictionary is then iterated through and every lead in the CSV is created in the API when the script is run.  
 
 ## Built With
 
